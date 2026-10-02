@@ -16,19 +16,19 @@ Built to understand how RAG works end to end: chunking, embeddings, vector searc
                                    extractive answer  OR  LangChain prompt | LLM | parser
 ```
 
-| Stage | File | What it does |
-|-------|------|--------------|
-| Load | `src/loader.py` | Reads PDF (page by page) and `.txt`/`.md` files with `pypdf` |
-| Chunk | `src/chunking.py` | `RecursiveCharacterTextSplitter` from LangChain, 500 chars with 100 overlap |
-| Embed | `src/embedder.py` | `all-MiniLM-L6-v2` (sentence-transformers), 384-dim, L2-normalised |
-| Store/search | `src/vectorstore.py` | FAISS `IndexFlatIP`; on normalised vectors, inner product = cosine similarity |
-| Answer | `src/qa.py` | Extractive mode (no key needed) or a LangChain chain with a grounded prompt |
+|Stage|File|What it does|
+|-|-|-|
+|Load|`src/loader.py`|Reads PDF (page by page) and `.txt`/`.md` files with `pypdf`|
+|Chunk|`src/chunking.py`|`RecursiveCharacterTextSplitter` from LangChain, 500 chars with 100 overlap|
+|Embed|`src/embedder.py`|`all-MiniLM-L6-v2` (sentence-transformers), 384-dim, L2-normalised|
+|Store/search|`src/vectorstore.py`|FAISS `IndexFlatIP`; on normalised vectors, inner product = cosine similarity|
+|Answer|`src/qa.py`|Extractive mode (no key needed) or a LangChain chain with a grounded prompt|
 
 ## Quick start
 
 ```bash
-git clone <your-repo-url> && cd docqa-rag
-python -m venv .venv && source .venv/bin/activate      # Windows: .venv\Scripts\activate
+git clone <https://github.com/testgithubsRitu/docqa-rag> \&\& cd docqa-rag
+python -m venv .venv \&\& source .venv/bin/activate      # Windows: .venv\\Scripts\\activate
 pip install -r requirements.txt
 
 python cli.py ingest data/                              # builds ./store (index + chunk metadata)
@@ -36,7 +36,7 @@ python cli.py ask "Why does RAG reduce hallucination?"
 ```
 
 Without an API key you get the top matching passages with similarity scores. To get a written answer,
-set `OPENAI_API_KEY` (optionally `OPENAI_MODEL`) and run the same `ask` command. Use `--no-llm` to force
+set `OPENAI\_API\_KEY` (optionally `OPENAI\_MODEL`) and run the same `ask` command. Use `--no-llm` to force
 passage-only output. The LangChain chain in `src/qa.py` can be pointed at any chat model.
 
 Put your own PDFs in `data/` and re-run `ingest` to query them.
@@ -52,14 +52,15 @@ metadata, correct top-1 retrieval, and saving/loading the index.
 
 ## Design choices and limitations
 
-- **Chunk size / overlap** are CLI flags (`--chunk-size`, `--chunk-overlap`); retrieval quality is sensitive to both.
-- **Exact search** (`IndexFlatIP`) is fine for thousands of chunks; for millions, switch to an approximate FAISS index (IVF/HNSW).
-- Scanned PDFs without a text layer need OCR first (not included).
-- Answers are only as good as the retrieved context; the prompt tells the model to say "I don't know" otherwise.
+* **Chunk size / overlap** are CLI flags (`--chunk-size`, `--chunk-overlap`); retrieval quality is sensitive to both.
+* **Exact search** (`IndexFlatIP`) is fine for thousands of chunks; for millions, switch to an approximate FAISS index (IVF/HNSW).
+* Scanned PDFs without a text layer need OCR first (not included).
+* Answers are only as good as the retrieved context; the prompt tells the model to say "I don't know" otherwise.
 
 ## Ideas for next steps
 
-- Swap FAISS for ChromaDB or Pinecone behind the same `VectorStore` interface
-- Add a reranker (cross-encoder) after retrieval
-- Measure retrieval quality (hit-rate@k / MRR) on a small labelled question set
-- Streamlit UI
+* Swap FAISS for ChromaDB or Pinecone behind the same `VectorStore` interface
+* Add a reranker (cross-encoder) after retrieval
+* Measure retrieval quality (hit-rate@k / MRR) on a small labelled question set
+* Streamlit UI
+
