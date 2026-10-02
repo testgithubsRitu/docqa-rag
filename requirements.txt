@@ -1,0 +1,8 @@
+numpy>=1.24
+faiss-cpu>=1.7.4
+sentence-transformers>=2.7.0
+langchain-text-splitters>=0.2.0
+langchain-core>=0.2.0
+langchain-openai>=0.1.0   # optional: only needed for LLM-written answers
+pypdf>=4.0.0
+pytest>=8.0.0
