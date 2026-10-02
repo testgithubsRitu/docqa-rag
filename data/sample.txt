@@ -1,0 +1,18 @@
+Retrieval-Augmented Generation (RAG) is a technique that combines a search step with a language model.
+Instead of relying only on what the model memorised during training, a RAG system first retrieves the
+passages most relevant to the user's question from a document collection, and then gives those passages
+to the model as context for its answer.
+
+A typical RAG pipeline has four stages. First, documents are split into small overlapping chunks so that
+each piece fits comfortably into a model's context window. Second, every chunk is converted into an
+embedding, a vector of numbers that captures its meaning. Third, the embeddings are stored in a vector
+database such as FAISS or ChromaDB, which can quickly find the vectors closest to a query vector.
+Fourth, at question time the query is embedded in the same way, the nearest chunks are retrieved, and
+they are placed in a prompt for the language model.
+
+Tokenization is the step that turns raw text into tokens, the sub-word units a Transformer actually reads.
+Embedding models such as MiniLM use a tokenizer first and then a Transformer encoder, whose self-attention
+layers let every token look at every other token, to produce one vector for the whole sentence.
+
+RAG helps reduce hallucination because answers can be traced back to source passages. Its quality depends
+heavily on chunk size, chunk overlap and the quality of the embedding model.
